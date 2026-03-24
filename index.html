@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prasha Leads — Search & Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1c1c27;
+    --border: #2a2a3a;
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --green: #00d4aa;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --font-head: 'Syne', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(108,99,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(108,99,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* HEADER */
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 48px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .logo-area h1 {
+    font-family: var(--font-head);
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #fff 30%, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .logo-area p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .dataset-badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .dataset-badge span {
+    color: var(--green);
+    font-weight: 500;
+  }
+
+  /* SEARCH PANEL */
+  .search-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .search-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--green));
+  }
+
+  .search-panel h2 {
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  input, select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+
+  input::placeholder { color: var(--muted); }
+
+  input:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+  }
+
+  select option { background: var(--surface2); }
+
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: var(--font-head);
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 12px 28px;
+    letter-spacing: 0.02em;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-primary:hover { background: #7c75ff; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(108,99,255,0.35); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-success {
+    background: var(--green);
+    color: #0a0a0f;
+  }
+
+  .btn-success:hover { background: #00e8bc; transform: translateY(-1px); }
+
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+  /* STATUS BAR */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 24px;
+    border: 1px solid transparent;
+    min-height: 48px;
+  }
+
+  .status-bar.idle { display: none; }
+  .status-bar.loading { background: rgba(108,99,255,0.1); border-color: rgba(108,99,255,0.3); color: var(--accent); }
+  .status-bar.success { background: rgba(0,212,170,0.1); border-color: rgba(0,212,170,0.3); color: var(--green); }
+  .status-bar.error { background: rgba(255,101,132,0.1); border-color: rgba(255,101,132,0.3); color: var(--accent2); }
+
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* RESULTS TABLE */
+  .results-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .results-header h2 {
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .results-count {
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .results-count .num { color: var(--green); font-weight: 500; }
+
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead tr {
+    background: var(--surface2);
+  }
+
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover { background: var(--surface2); }
+  tbody tr:last-child { border-bottom: none; }
+
+  td {
+    padding: 14px 16px;
+    vertical-align: top;
+    color: var(--text);
+    max-width: 200px;
+  }
+
+  td.name { font-weight: 500; color: #fff; white-space: nowrap; }
+
+  .score {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+  }
+
+  .score.high { color: var(--green); }
+  .score.mid { color: #ffc842; }
+  .score.low { color: var(--accent2); }
+
+  td a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 12px;
+    word-break: break-all;
+  }
+
+  td a:hover { text-decoration: underline; }
+
+  .save-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .save-btn:hover { border-color: var(--green); color: var(--green); }
+  .save-btn.saved { border-color: var(--green); color: var(--green); background: rgba(0,212,170,0.08); }
+  .save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .empty-state {
+    text-align: center;
+    padding: 64px 24px;
+    color: var(--muted);
+  }
+
+  .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; line-height: 1.6; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    padding: 16px 24px 0;
+  }
+
+  .tab {
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px 8px 0 0;
+    border: 1px solid transparent;
+    border-bottom: none;
+    cursor: pointer;
+    color: var(--muted);
+    background: transparent;
+    transition: all 0.15s;
+  }
+
+  .tab.active {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+    border-bottom: 1px solid var(--surface);
+    margin-bottom: -1px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-size: 13px;
+    z-index: 100;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.25s;
+    max-width: 320px;
+  }
+
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.green { border-color: var(--green); color: var(--green); }
+  .toast.red { border-color: var(--accent2); color: var(--accent2); }
+
+  /* Progress */
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 2px;
+    transition: width 0.3s;
+    width: 0%;
+  }
+
+  .select-all-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="logo-area">
+      <h1>Prasha Leads</h1>
+      <p>Search Google Maps · Store to Apify Dataset</p>
+    </div>
+    <div class="dataset-badge">
+      <div>Dataset <span>wQqL1VD7D7UPxHVSN</span></div>
+      <div>Actor <span>Google Maps Scraper</span></div>
+    </div>
+  </header>
+
+  <!-- SEARCH PANEL -->
+  <div class="search-panel">
+    <h2>🔍 Search for Leads</h2>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Search Query</label>
+        <input type="text" id="searchQuery" placeholder="e.g. car rental Brisbane, dentist Sydney..." value="car rental Queensland">
+      </div>
+      <div class="form-group">
+        <label>Max Results</label>
+        <select id="maxResults">
+          <option value="10">10 results</option>
+          <option value="20" selected>20 results</option>
+          <option value="50">50 results</option>
+          <option value="100">100 results</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Country</label>
+        <select id="country">
+          <option value="AU" selected>Australia</option>
+          <option value="US">United States</option>
+          <option value="GB">United Kingdom</option>
+          <option value="IN">India</option>
+          <option value="">Any</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Language</label>
+        <select id="language">
+          <option value="en" selected>English</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Min. Rating (optional)</label>
+        <select id="minRating">
+          <option value="">Any rating</option>
+          <option value="3">3+</option>
+          <option value="4">4+</option>
+          <option value="4.5">4.5+</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnSearch" onclick="startSearch()">
+        <span>▶</span> Run Search
+      </button>
+      <button class="btn btn-secondary" onclick="clearResults()">Clear</button>
+    </div>
+    <div id="progressWrap" style="display:none">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </div>
+
+  <!-- STATUS -->
+  <div class="status-bar idle" id="statusBar">
+    <div class="spinner"></div>
+    <span id="statusMsg">Idle</span>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results-panel">
+    <div class="results-header">
+      <h2>Results</h2>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <span class="results-count">Found: <span class="num" id="resultCount">0</span></span>
+        <button class="btn btn-success" id="btnSaveAll" onclick="saveSelectedToDataset()" disabled>
+          ↑ Save Selected to Dataset
+        </button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <div id="tableContainer">
+        <div class="empty-state">
+          <div class="icon">📡</div>
+          <p>Run a search to pull leads from Google Maps.<br>Select results and save them to your Apify dataset.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const APIFY_TOKEN = 'apify_api_vpPSEvDqncaK0IwW7OnvuGiiIQwHte169cQn';
+  const DATASET_ID = 'wQqL1VD7D7UPxHVSN';
+  const ACTOR_ID = 'compass~crawler-google-places';
+
+  let searchResults = [];
+  let savedIds = new Set();
+  let currentRunId = null;
+  let pollInterval = null;
+
+  function setStatus(type, msg) {
+    const bar = document.getElementById('statusBar');
+    const msgEl = document.getElementById('statusMsg');
+    bar.className = 'status-bar ' + type;
+    msgEl.textContent = msg;
+    const spinner = bar.querySelector('.spinner');
+    if (spinner) spinner.style.display = type === 'loading' ? 'block' : 'none';
+  }
+
+  function toast(msg, type = 'green') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show ' + type;
+    setTimeout(() => t.className = 'toast', 3000);
+  }
+
+  function setProgress(pct) {
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+
+  async function startSearch() {
+    const query = document.getElementById('searchQuery').value.trim();
+    if (!query) { toast('Please enter a search query', 'red'); return; }
+
+    const maxResults = parseInt(document.getElementById('maxResults').value);
+    const country = document.getElementById('country').value;
+    const language = document.getElementById('language').value;
+
+    document.getElementById('btnSearch').disabled = true;
+    document.getElementById('progressWrap').style.display = 'block';
+    setProgress(5);
+    setStatus('loading', 'Starting Apify actor run...');
+    clearResults();
+
+    const input = {
+      searchStringsArray: [query],
+      maxCrawledPlacesPerSearch: maxResults,
+      language: language,
+      ...(country ? { countryCode: country.toLowerCase() } : {})
+    };
+
+    try {
+      const runRes = await fetch(
+        `https://api.apify.com/v2/acts/${ACTOR_ID}/runs?token=${APIFY_TOKEN}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(input)
+        }
+      );
+
+      if (!runRes.ok) {
+        const err = await runRes.json();
+        throw new Error(err.error?.message || 'Failed to start actor');
+      }
+
+      const runData = await runRes.json();
+      currentRunId = runData.data.id;
+      setProgress(15);
+      setStatus('loading', `Run started (ID: ${currentRunId}) — waiting for results...`);
+      pollForResults(currentRunId);
+
+    } catch (e) {
+      setStatus('error', 'Error: ' + e.message);
+      toast('Failed to start search: ' + e.message, 'red');
+      document.getElementById('btnSearch').disabled = false;
+    }
+  }
+
+  function pollForResults(runId) {
+    let dots = 0;
+    let progress = 15;
+    pollInterval = setInterval(async () => {
+      dots = (dots + 1) % 4;
+      progress = Math.min(progress + 2, 85);
+      setProgress(progress);
+      setStatus('loading', 'Scraping Google Maps' + '.'.repeat(dots + 1));
+
+      try {
+        const res = await fetch(
+          `https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_TOKEN}`
+        );
+        const data = await res.json();
+        const status = data.data.status;
+
+        if (status === 'SUCCEEDED') {
+          clearInterval(pollInterval);
+          setProgress(95);
+          await fetchDatasetItems(data.data.defaultDatasetId);
+        } else if (status === 'FAILED' || status === 'ABORTED') {
+          clearInterval(pollInterval);
+          setStatus('error', 'Actor run ' + status.toLowerCase());
+          toast('Actor run failed', 'red');
+          document.getElementById('btnSearch').disabled = false;
+        }
+      } catch (e) {
+        // keep polling
+      }
+    }, 4000);
+  }
+
+  async function fetchDatasetItems(datasetId) {
+    setStatus('loading', 'Fetching results...');
+    try {
+      const res = await fetch(
+        `https://api.apify.com/v2/datasets/${datasetId}/items?token=${APIFY_TOKEN}&clean=true&limit=200`
+      );
+      const items = await res.json();
+      setProgress(100);
+
+      const minRating = parseFloat(document.getElementById('minRating').value) || 0;
+      searchResults = minRating > 0
+        ? items.filter(i => (i.totalScore || 0) >= minRating)
+        : items;
+
+      renderTable(searchResults);
+      setStatus('success', `Found ${searchResults.length} leads from Google Maps`);
+      toast(`${searchResults.length} leads fetched!`);
+      document.getElementById('resultCount').textContent = searchResults.length;
+
+      if (searchResults.length > 0) {
+        document.getElementById('btnSaveAll').disabled = false;
+      }
+
+    } catch (e) {
+      setStatus('error', 'Failed to fetch results: ' + e.message);
+    } finally {
+      document.getElementById('btnSearch').disabled = false;
+      setTimeout(() => {
+        document.getElementById('progressWrap').style.display = 'none';
+        setProgress(0);
+      }, 1000);
+    }
+  }
+
+  function renderTable(results) {
+    if (!results.length) {
+      document.getElementById('tableContainer').innerHTML = `
+        <div class="empty-state"><div class="icon">🔍</div><p>No results found. Try a different query.</p></div>`;
+      return;
+    }
+
+    const rows = results.map((item, i) => {
+      const score = item.totalScore || 0;
+      const scoreClass = score >= 4.5 ? 'high' : score >= 3.5 ? 'mid' : 'low';
+      const star = score >= 4.5 ? '★' : score >= 3.5 ? '☆' : '✧';
+      const isSaved = savedIds.has(item.placeId || i);
+
+      return `<tr>
+        <td><input type="checkbox" class="row-check" data-idx="${i}" ${isSaved ? 'checked disabled' : ''}></td>
+        <td class="name">${esc(item.title || item.name || '—')}</td>
+        <td><span class="score ${scoreClass}">${star} ${score.toFixed(1)}</span></td>
+        <td>${item.reviewsCount || 0}</td>
+        <td>${esc(item.street || '—')}</td>
+        <td>${esc(item.city || '—')}</td>
+        <td>${esc(item.state || '—')}</td>
+        <td>${item.phone ? `<a href="tel:${item.phone}">${esc(item.phone)}</a>` : '—'}</td>
+        <td>${item.website ? `<a href="${item.website}" target="_blank" rel="noopener">↗ site</a>` : '—'}</td>
+        <td>
+          <button class="save-btn ${isSaved ? 'saved' : ''}" id="savebtn-${i}"
+            onclick="saveSingleLead(${i})"
+            ${isSaved ? 'disabled' : ''}>
+            ${isSaved ? '✓ saved' : '↑ save'}
+          </button>
+        </td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('tableContainer').innerHTML = `
+      <div class="select-all-row">
+        <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">
+        <label for="selectAll" style="cursor:pointer;user-select:none">Select all</label>
+        <span style="margin-left:auto;color:var(--muted);font-size:11px">
+          Check rows to save, or use individual save buttons
+        </span>
+      </div>
+      <table>
+        <thead><tr>
+          <th></th><th>Place Name</th><th>Score</th><th>Reviews</th>
+          <th>Street</th><th>City</th><th>State</th>
+          <th>Phone</th><th>Website</th><th>Action</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  }
+
+  function toggleSelectAll(cb) {
+    document.querySelectorAll('.row-check:not(:disabled)').forEach(c => c.checked = cb.checked);
+  }
+
+  async function saveSelectedToDataset() {
+    const checked = [...document.querySelectorAll('.row-check:checked:not(:disabled)')];
+    if (!checked.length) { toast('No rows selected', 'red'); return; }
+
+    const items = checked.map(c => searchResults[parseInt(c.dataset.idx)]);
+    document.getElementById('btnSaveAll').disabled = true;
+    setStatus('loading', `Saving ${items.length} leads to dataset...`);
+
+    try {
+      const res = await fetch(
+        `https://api.apify.com/v2/datasets/${DATASET_ID}/items?token=${APIFY_TOKEN}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(items)
+        }
+      );
+
+      if (!res.ok) throw new Error('Save failed: ' + res.status);
+
+      checked.forEach(c => {
+        const idx = parseInt(c.dataset.idx);
+        const item = searchResults[idx];
+        savedIds.add(item.placeId || idx);
+        const btn = document.getElementById('savebtn-' + idx);
+        if (btn) { btn.textContent = '✓ saved'; btn.classList.add('saved'); btn.disabled = true; }
+        c.checked = false; c.disabled = true;
+      });
+
+      setStatus('success', `${items.length} leads saved to dataset!`);
+      toast(`${items.length} leads saved to Apify dataset ✓`);
+    } catch (e) {
+      setStatus('error', 'Save failed: ' + e.message);
+      toast('Save failed: ' + e.message, 'red');
+    } finally {
+      document.getElementById('btnSaveAll').disabled = false;
+    }
+  }
+
+  async function saveSingleLead(idx) {
+    const item = searchResults[idx];
+    const btn = document.getElementById('savebtn-' + idx);
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    try {
+      const res = await fetch(
+        `https://api.apify.com/v2/datasets/${DATASET_ID}/items?token=${APIFY_TOKEN}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify([item])
+        }
+      );
+      if (!res.ok) throw new Error('Save failed');
+      savedIds.add(item.placeId || idx);
+      btn.textContent = '✓ saved';
+      btn.classList.add('saved');
+      toast('Lead saved!');
+    } catch (e) {
+      btn.textContent = '↑ save';
+      btn.disabled = false;
+      toast('Save failed', 'red');
+    }
+  }
+
+  function clearResults() {
+    searchResults = [];
+    document.getElementById('resultCount').textContent = '0';
+    document.getElementById('btnSaveAll').disabled = true;
+    document.getElementById('tableContainer').innerHTML = `
+      <div class="empty-state">
+        <div class="icon">📡</div>
+        <p>Run a search to pull leads from Google Maps.<br>Select results and save them to your Apify dataset.</p>
+      </div>`;
+    setStatus('idle', '');
+    if (pollInterval) clearInterval(pollInterval);
+  }
+
+  function esc(str) {
+    if (!str) return '—';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+</script>
+</body>
+</html>

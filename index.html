@@ -454,6 +454,20 @@
     accent-color: var(--accent);
     cursor: pointer;
   }
+
+  .history-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.history-card:hover {
+  border-color: var(--accent);
+}
 </style>
 </head>
 <body>
@@ -464,10 +478,10 @@
       <h1>Prasha Leads</h1>
       <p>Search Google Maps · Store to Apify Dataset</p>
     </div>
-    <!-- <div class="dataset-badge">
+    <div class="dataset-badge">
       <div>Dataset <span>wQqL1VD7D7UPxHVSN</span></div>
       <div>Actor <span>Google Maps Scraper</span></div>
-    </div> -->
+    </div>
   </header>
 
   <!-- SEARCH PANEL -->
@@ -552,6 +566,14 @@
     <div class="spinner"></div>
     <span id="statusMsg">Idle</span>
   </div>
+
+<div class="results-panel" style="margin-bottom:20px;">
+  <div class="results-header">
+    <h2>Search History</h2>
+    <button class="btn btn-secondary" onclick="clearHistory()">Clear</button>
+  </div>
+  <div id="historyContainer" style="padding:16px;"></div>
+</div>
 
   <!-- RESULTS -->
   <div class="results-panel">
@@ -706,6 +728,18 @@
 
 // APPLY YOUR NEW FILTERS
 searchResults = applyAdvancedFilters(results);
+saveSearchHistory({
+
+  query: document.getElementById('searchQuery').value,
+  filters: {
+    businessSize: document.getElementById('businessSize').value,
+    digitalPresence: document.getElementById('digitalPresence').value,
+    minRating: document.getElementById('minRating').value,
+    country: document.getElementById('country').value
+  },
+  count: searchResults.length
+});
+renderHistory();
       renderTable(searchResults);
       setStatus('success', `Found ${searchResults.length} leads from Google Maps`);
       toast(`${searchResults.length} leads fetched!`);
@@ -891,6 +925,70 @@ function applyAdvancedFilters(items) {
     if (!str) return '—';
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
+  function saveSearchHistory({ query, filters, count }) {
+  const history = JSON.parse(localStorage.getItem("lead_history") || "[]");
+
+  history.unshift({
+    id: Date.now(),
+    query,
+    filters,
+    count,
+    date: new Date().toLocaleString()
+  });
+
+  // keep last 20 searches
+  localStorage.setItem("lead_history", JSON.stringify(history.slice(0, 20)));
+}
+
+function renderHistory() {
+  const history = JSON.parse(localStorage.getItem("lead_history") || "[]");
+
+  if (!history.length) {
+    document.getElementById('historyContainer').innerHTML =
+      '<p style="color:var(--muted)">No history yet</p>';
+    return;
+  }
+
+  const html = history.map(item => `
+    <div class="history-card" onclick="loadHistory(${item.id})">
+      <div><strong>${item.query}</strong></div>
+      <div style="font-size:12px;color:var(--muted)">
+        ${item.date} • ${item.count} leads
+      </div>
+      <div style="font-size:11px;color:var(--muted)">
+        Size: ${item.filters.businessSize || 'Any'} |
+Presence: ${item.filters.digitalPresence || 'Any'} |
+Rating: ${item.filters.minRating || 'Any'} |
+Country: ${item.filters.country || 'Any'}
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('historyContainer').innerHTML = html;
+}
+
+function loadHistory(id) {
+  const history = JSON.parse(localStorage.getItem("lead_history") || "[]");
+  const item = history.find(h => h.id === id);
+
+  if (!item) return;
+
+  // SET VALUES FIRST
+  document.getElementById('searchQuery').value = item.query;
+  document.getElementById('businessSize').value = item.filters.businessSize || '';
+  document.getElementById('digitalPresence').value = item.filters.digitalPresence || '';
+  document.getElementById('minRating').value = item.filters.minRating || '';
+  document.getElementById('country').value = item.filters.country || '';
+
+  toast("Filters restored. Running search...");
+
+  // THEN RUN SEARCH ✅
+  startSearch();
+}
+
+
+
+renderHistory();
 </script>
 </body>
 </html>

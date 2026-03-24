@@ -478,6 +478,26 @@
         <label>Search Query</label>
         <input type="text" id="searchQuery" placeholder="e.g. car rental Brisbane, dentist Sydney..." value="car rental Queensland">
       </div>
+      
+  <div class="form-group">
+    <label>Business Size</label>
+    <select id="businessSize">
+      <option value="">Any Size</option>
+      <option value="small">Small</option>
+      <option value="medium">Medium</option>
+      <option value="large">Large</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Digital Presence Status</label>
+    <select id="digitalPresence">
+      <option value="">Any</option>
+      <option value="both">No Website + Bad Website</option>
+      <option value="no_website">No Website</option>
+      <option value="bad_website">Bad Website</option>
+    </select>
+  </div>
       <div class="form-group">
         <label>Max Results</label>
         <select id="maxResults">
@@ -497,6 +517,7 @@
           <option value="">Any</option>
         </select>
       </div>
+      
       <div class="form-group">
         <label>Language</label>
         <select id="language">
@@ -679,10 +700,12 @@
       setProgress(100);
 
       const minRating = parseFloat(document.getElementById('minRating').value) || 0;
-      searchResults = minRating > 0
-        ? items.filter(i => (i.totalScore || 0) >= minRating)
-        : items;
+   let results = minRating > 0
+  ? items.filter(i => (i.totalScore || 0) >= minRating)
+  : items;
 
+// APPLY YOUR NEW FILTERS
+searchResults = applyAdvancedFilters(results);
       renderTable(searchResults);
       setStatus('success', `Found ${searchResults.length} leads from Google Maps`);
       toast(`${searchResults.length} leads fetched!`);
@@ -702,7 +725,34 @@
       }, 1000);
     }
   }
+function applyAdvancedFilters(items) {
+  const size = document.getElementById('businessSize').value;
+  const digitalPresence = document.getElementById('digitalPresence').value;
 
+  return items.filter(item => {
+    const reviews = item.reviewsCount || 0;
+    const rating = item.totalScore || 0;
+    const hasWebsite = !!item.website;
+
+    /* BUSINESS SIZE FILTER */
+    if (size === 'small' && reviews >= 20) return false;
+    if (size === 'medium' && (reviews < 20 || reviews >= 100)) return false;
+    if (size === 'large' && reviews < 100) return false;
+
+    /* DIGITAL PRESENCE FILTER */
+    if (digitalPresence === 'no_website' && hasWebsite) return false;
+
+    if (digitalPresence === 'bad_website') {
+      if (!hasWebsite || rating >= 4) return false;
+    }
+
+    if (digitalPresence === 'both') {
+      if (hasWebsite && rating >= 4) return false;
+    }
+
+    return true;
+  });
+}
   function renderTable(results) {
     if (!results.length) {
       document.getElementById('tableContainer').innerHTML = `

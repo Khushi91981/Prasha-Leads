@@ -729,7 +729,6 @@
 // APPLY YOUR NEW FILTERS
 searchResults = applyAdvancedFilters(results);
 saveSearchHistory({
-
   query: document.getElementById('searchQuery').value,
   filters: {
     businessSize: document.getElementById('businessSize').value,
@@ -737,7 +736,8 @@ saveSearchHistory({
     minRating: document.getElementById('minRating').value,
     country: document.getElementById('country').value
   },
-  count: searchResults.length
+  count: searchResults.length,
+  results: searchResults   // 🔥 IMPORTANT
 });
 renderHistory();
       renderTable(searchResults);
@@ -928,13 +928,14 @@ function applyAdvancedFilters(items) {
   function saveSearchHistory({ query, filters, count }) {
   const history = JSON.parse(localStorage.getItem("lead_history") || "[]");
 
-  history.unshift({
-    id: Date.now(),
-    query,
-    filters,
-    count,
-    date: new Date().toLocaleString()
-  });
+history.unshift({
+  id: Date.now(),
+  query,
+  filters,
+  count,
+  results,   // 🔥 store full data
+  date: new Date().toLocaleString()
+});
 
   // keep last 20 searches
   localStorage.setItem("lead_history", JSON.stringify(history.slice(0, 20)));
@@ -973,17 +974,20 @@ function loadHistory(id) {
 
   if (!item) return;
 
-  // SET VALUES FIRST
+  // restore filters
   document.getElementById('searchQuery').value = item.query;
   document.getElementById('businessSize').value = item.filters.businessSize || '';
   document.getElementById('digitalPresence').value = item.filters.digitalPresence || '';
   document.getElementById('minRating').value = item.filters.minRating || '';
   document.getElementById('country').value = item.filters.country || '';
 
-  toast("Filters restored. Running search...");
+  // 🔥 SHOW STORED RESULTS (NO API CALL)
+  searchResults = item.results || [];
 
-  // THEN RUN SEARCH ✅
-  startSearch();
+  renderTable(searchResults);
+  document.getElementById('resultCount').textContent = searchResults.length;
+
+  toast("Loaded saved results (no API call)");
 }
 
 

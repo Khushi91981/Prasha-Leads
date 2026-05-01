@@ -30,7 +30,6 @@
     overflow-x: hidden;
   }
 
-  /* Background grid */
   body::before {
     content: '';
     position: fixed;
@@ -46,12 +45,11 @@
   .container {
     position: relative;
     z-index: 1;
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 40px 24px 80px;
   }
 
-  /* HEADER */
   header {
     display: flex;
     align-items: flex-start;
@@ -79,22 +77,6 @@
     letter-spacing: 0.04em;
   }
 
-  .dataset-badge {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.8;
-  }
-
-  .dataset-badge span {
-    color: var(--green);
-    font-weight: 500;
-  }
-
-  /* SEARCH PANEL */
   .search-panel {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -132,12 +114,7 @@
     .form-grid { grid-template-columns: 1fr; }
   }
 
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
   .form-group.full { grid-column: 1 / -1; }
 
   label {
@@ -161,12 +138,10 @@
   }
 
   input::placeholder { color: var(--muted); }
-
   input:focus, select:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
   }
-
   select option { background: var(--surface2); }
 
   .btn-row {
@@ -190,32 +165,24 @@
     gap: 8px;
   }
 
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-  }
-
+  .btn-primary { background: var(--accent); color: #fff; }
   .btn-primary:hover { background: #7c75ff; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(108,99,255,0.35); }
   .btn-primary:active { transform: translateY(0); }
 
-  .btn-secondary {
-    background: transparent;
-    color: var(--text);
-    border: 1px solid var(--border);
-  }
-
+  .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
   .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
-  .btn-success {
-    background: var(--green);
-    color: #0a0a0f;
-  }
-
+  .btn-success { background: var(--green); color: #0a0a0f; }
   .btn-success:hover { background: #00e8bc; transform: translateY(-1px); }
+
+  .btn-download { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-download:hover { border-color: #ffc842; color: #ffc842; }
+
+  .btn-download-json { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-download-json:hover { border-color: var(--accent2); color: var(--accent2); }
 
   .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
 
-  /* STATUS BAR */
   .status-bar {
     display: flex;
     align-items: center;
@@ -244,7 +211,6 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* RESULTS TABLE */
   .results-panel {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -268,6 +234,13 @@
     font-weight: 700;
   }
 
+  .results-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
   .results-count {
     font-size: 12px;
     color: var(--muted);
@@ -279,9 +252,73 @@
 
   .results-count .num { color: var(--green); font-weight: 500; }
 
-  .table-wrap {
-    overflow-x: auto;
+  /* Email count badge */
+  .email-badge {
+    font-size: 12px;
+    color: var(--muted);
+    background: rgba(108,99,255,0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(108,99,255,0.3);
   }
+  .email-badge .num { color: var(--accent); font-weight: 500; }
+
+  /* Download dropdown */
+  .download-group {
+    position: relative;
+  }
+
+  .download-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 50;
+    min-width: 200px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    display: none;
+  }
+
+  .download-dropdown.open { display: block; }
+
+  .dl-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text);
+    transition: background 0.15s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: var(--font-mono);
+  }
+
+  .dl-option:hover { background: var(--surface); color: var(--accent); }
+
+  .dl-option .dl-icon { font-size: 16px; }
+
+  .dl-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 0;
+  }
+
+  .dl-label {
+    font-size: 10px;
+    color: var(--muted);
+    padding: 6px 16px 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .table-wrap { overflow-x: auto; }
 
   table {
     width: 100%;
@@ -289,12 +326,10 @@
     font-size: 13px;
   }
 
-  thead tr {
-    background: var(--surface2);
-  }
+  thead tr { background: var(--surface2); }
 
   th {
-    padding: 12px 16px;
+    padding: 12px 14px;
     text-align: left;
     font-size: 10px;
     letter-spacing: 0.1em;
@@ -314,33 +349,62 @@
   tbody tr:last-child { border-bottom: none; }
 
   td {
-    padding: 14px 16px;
-    vertical-align: top;
+    padding: 13px 14px;
+    vertical-align: middle;
     color: var(--text);
-    max-width: 200px;
+    max-width: 180px;
   }
 
   td.name { font-weight: 500; color: #fff; white-space: nowrap; }
 
-  .score {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-weight: 500;
-  }
-
+  .score { display: inline-flex; align-items: center; gap: 4px; font-weight: 500; }
   .score.high { color: var(--green); }
   .score.mid { color: #ffc842; }
   .score.low { color: var(--accent2); }
 
-  td a {
-    color: var(--accent);
-    text-decoration: none;
-    font-size: 12px;
-    word-break: break-all;
+  td a { color: var(--accent); text-decoration: none; font-size: 12px; word-break: break-all; }
+  td a:hover { text-decoration: underline; }
+
+  /* Email cell */
+  .email-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
   }
 
-  td a:hover { text-decoration: underline; }
+  .email-cell a {
+    color: var(--accent);
+    font-size: 12px;
+    text-decoration: none;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+  }
+
+  .email-cell a:hover { text-decoration: underline; }
+
+  .email-copy {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: color 0.15s;
+    flex-shrink: 0;
+  }
+
+  .email-copy:hover { color: var(--accent); }
+  .email-copy.copied { color: var(--green); }
+
+  .no-email {
+    color: var(--muted);
+    font-size: 11px;
+    font-style: italic;
+  }
 
   .save-btn {
     font-family: var(--font-mono);
@@ -368,59 +432,6 @@
   .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
   .empty-state p { font-size: 14px; line-height: 1.6; }
 
-  /* TABS */
-  .tabs {
-    display: flex;
-    gap: 4px;
-    padding: 16px 24px 0;
-  }
-
-  .tab {
-    font-family: var(--font-head);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 8px 8px 0 0;
-    border: 1px solid transparent;
-    border-bottom: none;
-    cursor: pointer;
-    color: var(--muted);
-    background: transparent;
-    transition: all 0.15s;
-  }
-
-  .tab.active {
-    background: var(--surface);
-    border-color: var(--border);
-    color: var(--text);
-    border-bottom: 1px solid var(--surface);
-    margin-bottom: -1px;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* TOAST */
-  .toast {
-    position: fixed;
-    bottom: 32px;
-    right: 32px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 20px;
-    font-size: 13px;
-    z-index: 100;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.25s;
-    max-width: 320px;
-  }
-
-  .toast.show { opacity: 1; transform: translateY(0); }
-  .toast.green { border-color: var(--green); color: var(--green); }
-  .toast.red { border-color: var(--accent2); color: var(--accent2); }
-
-  /* Progress */
   .progress-bar {
     height: 3px;
     background: var(--border);
@@ -454,6 +465,27 @@
     accent-color: var(--accent);
     cursor: pointer;
   }
+
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-size: 13px;
+    z-index: 200;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.25s;
+    max-width: 320px;
+  }
+
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.green { border-color: var(--green); color: var(--green); }
+  .toast.red { border-color: var(--accent2); color: var(--accent2); }
+  .toast.yellow { border-color: #ffc842; color: #ffc842; }
 </style>
 </head>
 <body>
@@ -464,10 +496,6 @@
       <h1>Prasha Leads</h1>
       <p>Search Google Maps · Store to Apify Dataset</p>
     </div>
-    <!-- <div class="dataset-badge">
-      <div>Dataset <span>wQqL1VD7D7UPxHVSN</span></div>
-      <div>Actor <span>Google Maps Scraper</span></div>
-    </div> -->
   </header>
 
   <!-- SEARCH PANEL -->
@@ -478,26 +506,27 @@
         <label>Search Query</label>
         <input type="text" id="searchQuery" placeholder="e.g. car rental Brisbane, dentist Sydney..." value="car rental Queensland">
       </div>
-      
-  <div class="form-group">
-    <label>Business Size</label>
-    <select id="businessSize">
-      <option value="">Any Size</option>
-      <option value="small">Small</option>
-      <option value="medium">Medium</option>
-      <option value="large">Large</option>
-    </select>
-  </div>
 
-  <div class="form-group">
-    <label>Digital Presence Status</label>
-    <select id="digitalPresence">
-      <option value="">Any</option>
-      <option value="both">No Website + Bad Website</option>
-      <option value="no_website">No Website</option>
-      <option value="bad_website">Bad Website</option>
-    </select>
-  </div>
+      <div class="form-group">
+        <label>Business Size</label>
+        <select id="businessSize">
+          <option value="">Any Size</option>
+          <option value="small">Small</option>
+          <option value="medium">Medium</option>
+          <option value="large">Large</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Digital Presence Status</label>
+        <select id="digitalPresence">
+          <option value="">Any</option>
+          <option value="both">No Website + Bad Website</option>
+          <option value="no_website">No Website</option>
+          <option value="bad_website">Bad Website</option>
+        </select>
+      </div>
+
       <div class="form-group">
         <label>Max Results</label>
         <select id="maxResults">
@@ -507,6 +536,7 @@
           <option value="100">100 results</option>
         </select>
       </div>
+
       <div class="form-group">
         <label>Country</label>
         <select id="country">
@@ -517,7 +547,7 @@
           <option value="">Any</option>
         </select>
       </div>
-      
+
       <div class="form-group">
         <label>Language</label>
         <select id="language">
@@ -526,6 +556,7 @@
           <option value="fr">French</option>
         </select>
       </div>
+
       <div class="form-group">
         <label>Min. Rating (optional)</label>
         <select id="minRating">
@@ -557,10 +588,43 @@
   <div class="results-panel">
     <div class="results-header">
       <h2>Results</h2>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <div class="results-actions">
         <span class="results-count">Found: <span class="num" id="resultCount">0</span></span>
+        <span class="email-badge" id="emailBadge" style="display:none">
+          ✉ Emails: <span class="num" id="emailCount">0</span>
+        </span>
+
+        <!-- Download dropdown -->
+        <div class="download-group" id="downloadGroup">
+          <button class="btn btn-download" id="btnDownload" onclick="toggleDownloadMenu(event)" disabled>
+            ↓ Download
+          </button>
+          <div class="download-dropdown" id="downloadDropdown">
+            <div class="dl-label">All Results</div>
+            <button class="dl-option" onclick="downloadCSV('all')">
+              <span class="dl-icon">📄</span> All leads as CSV
+            </button>
+            <button class="dl-option" onclick="downloadJSON('all')">
+              <span class="dl-icon">{ }</span> All leads as JSON
+            </button>
+            <div class="dl-divider"></div>
+            <div class="dl-label">Selected Only</div>
+            <button class="dl-option" onclick="downloadCSV('selected')">
+              <span class="dl-icon">📄</span> Selected leads as CSV
+            </button>
+            <button class="dl-option" onclick="downloadJSON('selected')">
+              <span class="dl-icon">{ }</span> Selected leads as JSON
+            </button>
+            <div class="dl-divider"></div>
+            <div class="dl-label">Email Leads</div>
+            <button class="dl-option" onclick="downloadCSV('email')">
+              <span class="dl-icon">✉</span> Leads with email only (CSV)
+            </button>
+          </div>
+        </div>
+
         <button class="btn btn-success" id="btnSaveAll" onclick="saveSelectedToDataset()" disabled>
-          ↑ Save Selected to Dataset
+          ↑ Save Selected
         </button>
       </div>
     </div>
@@ -576,7 +640,6 @@
 
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
@@ -588,6 +651,18 @@
   let savedIds = new Set();
   let currentRunId = null;
   let pollInterval = null;
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#downloadGroup')) {
+      document.getElementById('downloadDropdown').classList.remove('open');
+    }
+  });
+
+  function toggleDownloadMenu(e) {
+    e.stopPropagation();
+    document.getElementById('downloadDropdown').classList.toggle('open');
+  }
 
   function setStatus(type, msg) {
     const bar = document.getElementById('statusBar');
@@ -609,6 +684,30 @@
     document.getElementById('progressFill').style.width = pct + '%';
   }
 
+  /* ─── EMAIL EXTRACTION ─────────────────────────────────────── */
+  function extractEmail(item) {
+    // Check all possible fields the Apify actor may return emails in
+    if (item.email) return item.email;
+    if (item.emails && item.emails.length) return item.emails[0];
+    if (item.contactInfo && item.contactInfo.email) return item.contactInfo.email;
+
+    // Sometimes stored as array of contact objects
+    if (Array.isArray(item.emails)) {
+      const found = item.emails.find(e => typeof e === 'string' && e.includes('@'));
+      if (found) return found;
+    }
+
+    // Try additionalInfo or attributes
+    if (item.additionalInfo) {
+      const str = JSON.stringify(item.additionalInfo);
+      const match = str.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/);
+      if (match) return match[0];
+    }
+
+    return null;
+  }
+
+  /* ─── SEARCH ───────────────────────────────────────────────── */
   async function startSearch() {
     const query = document.getElementById('searchQuery').value.trim();
     if (!query) { toast('Please enter a search query', 'red'); return; }
@@ -668,9 +767,7 @@
       setStatus('loading', 'Scraping Google Maps' + '.'.repeat(dots + 1));
 
       try {
-        const res = await fetch(
-          `https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_TOKEN}`
-        );
+        const res = await fetch(`https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_TOKEN}`);
         const data = await res.json();
         const status = data.data.status;
 
@@ -684,9 +781,7 @@
           toast('Actor run failed', 'red');
           document.getElementById('btnSearch').disabled = false;
         }
-      } catch (e) {
-        // keep polling
-      }
+      } catch (e) { /* keep polling */ }
     }, 4000);
   }
 
@@ -700,20 +795,23 @@
       setProgress(100);
 
       const minRating = parseFloat(document.getElementById('minRating').value) || 0;
-   let results = minRating > 0
-  ? items.filter(i => (i.totalScore || 0) >= minRating)
-  : items;
+      let results = minRating > 0
+        ? items.filter(i => (i.totalScore || 0) >= minRating)
+        : items;
 
-// APPLY YOUR NEW FILTERS
-searchResults = applyAdvancedFilters(results);
+      searchResults = applyAdvancedFilters(results);
 
       renderTable(searchResults);
-      setStatus('success', `Found ${searchResults.length} leads from Google Maps`);
+      updateEmailBadge();
+
+      const emailCount = searchResults.filter(r => extractEmail(r)).length;
+      setStatus('success', `Found ${searchResults.length} leads · ${emailCount} with email`);
       toast(`${searchResults.length} leads fetched!`);
       document.getElementById('resultCount').textContent = searchResults.length;
 
       if (searchResults.length > 0) {
         document.getElementById('btnSaveAll').disabled = false;
+        document.getElementById('btnDownload').disabled = false;
       }
 
     } catch (e) {
@@ -726,34 +824,36 @@ searchResults = applyAdvancedFilters(results);
       }, 1000);
     }
   }
-function applyAdvancedFilters(items) {
-  const size = document.getElementById('businessSize').value;
-  const digitalPresence = document.getElementById('digitalPresence').value;
 
-  return items.filter(item => {
-    const reviews = item.reviewsCount || 0;
-    const rating = item.totalScore || 0;
-    const hasWebsite = !!item.website;
+  function applyAdvancedFilters(items) {
+    const size = document.getElementById('businessSize').value;
+    const digitalPresence = document.getElementById('digitalPresence').value;
 
-    /* BUSINESS SIZE FILTER */
-    if (size === 'small' && reviews >= 20) return false;
-    if (size === 'medium' && (reviews < 20 || reviews >= 100)) return false;
-    if (size === 'large' && reviews < 100) return false;
+    return items.filter(item => {
+      const reviews = item.reviewsCount || 0;
+      const rating = item.totalScore || 0;
+      const hasWebsite = !!item.website;
 
-    /* DIGITAL PRESENCE FILTER */
-    if (digitalPresence === 'no_website' && hasWebsite) return false;
+      if (size === 'small' && reviews >= 20) return false;
+      if (size === 'medium' && (reviews < 20 || reviews >= 100)) return false;
+      if (size === 'large' && reviews < 100) return false;
 
-    if (digitalPresence === 'bad_website') {
-      if (!hasWebsite || rating >= 4) return false;
-    }
+      if (digitalPresence === 'no_website' && hasWebsite) return false;
+      if (digitalPresence === 'bad_website') { if (!hasWebsite || rating >= 4) return false; }
+      if (digitalPresence === 'both') { if (hasWebsite && rating >= 4) return false; }
 
-    if (digitalPresence === 'both') {
-      if (hasWebsite && rating >= 4) return false;
-    }
+      return true;
+    });
+  }
 
-    return true;
-  });
-}
+  function updateEmailBadge() {
+    const count = searchResults.filter(r => extractEmail(r)).length;
+    const badge = document.getElementById('emailBadge');
+    document.getElementById('emailCount').textContent = count;
+    badge.style.display = count > 0 ? 'inline-flex' : 'none';
+  }
+
+  /* ─── RENDER TABLE ──────────────────────────────────────────── */
   function renderTable(results) {
     if (!results.length) {
       document.getElementById('tableContainer').innerHTML = `
@@ -766,6 +866,14 @@ function applyAdvancedFilters(items) {
       const scoreClass = score >= 4.5 ? 'high' : score >= 3.5 ? 'mid' : 'low';
       const star = score >= 4.5 ? '★' : score >= 3.5 ? '☆' : '✧';
       const isSaved = savedIds.has(item.placeId || i);
+      const email = extractEmail(item);
+
+      const emailCell = email
+        ? `<div class="email-cell">
+            <a href="mailto:${esc(email)}" title="${esc(email)}">${esc(email)}</a>
+            <button class="email-copy" onclick="copyEmail('${esc(email)}', this)" title="Copy email">⎘</button>
+           </div>`
+        : `<span class="no-email">—</span>`;
 
       return `<tr>
         <td><input type="checkbox" class="row-check" data-idx="${i}" ${isSaved ? 'checked disabled' : ''}></td>
@@ -776,11 +884,11 @@ function applyAdvancedFilters(items) {
         <td>${esc(item.city || '—')}</td>
         <td>${esc(item.state || '—')}</td>
         <td>${item.phone ? `<a href="tel:${item.phone}">${esc(item.phone)}</a>` : '—'}</td>
-        <td>${item.website ? `<a href="${item.website}" target="_blank" rel="noopener">↗ site</a>` : '—'}</td>
+        <td>${email ? emailCell : '<span class="no-email">—</span>'}</td>
+        <td>${item.website ? `<a href="${item.website}" target="_blank" rel="noopener">↗</a>` : '—'}</td>
         <td>
           <button class="save-btn ${isSaved ? 'saved' : ''}" id="savebtn-${i}"
-            onclick="saveSingleLead(${i})"
-            ${isSaved ? 'disabled' : ''}>
+            onclick="saveSingleLead(${i})" ${isSaved ? 'disabled' : ''}>
             ${isSaved ? '✓ saved' : '↑ save'}
           </button>
         </td>
@@ -792,14 +900,14 @@ function applyAdvancedFilters(items) {
         <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">
         <label for="selectAll" style="cursor:pointer;user-select:none">Select all</label>
         <span style="margin-left:auto;color:var(--muted);font-size:11px">
-          Check rows to save, or use individual save buttons
+          Check rows to save or download selected
         </span>
       </div>
       <table>
         <thead><tr>
           <th></th><th>Place Name</th><th>Score</th><th>Reviews</th>
           <th>Street</th><th>City</th><th>State</th>
-          <th>Phone</th><th>Website</th><th>Action</th>
+          <th>Phone</th><th>Email</th><th>Website</th><th>Action</th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>`;
@@ -809,6 +917,101 @@ function applyAdvancedFilters(items) {
     document.querySelectorAll('.row-check:not(:disabled)').forEach(c => c.checked = cb.checked);
   }
 
+  /* ─── COPY EMAIL ────────────────────────────────────────────── */
+  function copyEmail(email, btn) {
+    navigator.clipboard.writeText(email).then(() => {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      toast('Email copied!');
+      setTimeout(() => { btn.textContent = '⎘'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  /* ─── DOWNLOAD ──────────────────────────────────────────────── */
+  function getSelectedItems() {
+    const checked = [...document.querySelectorAll('.row-check:checked:not(:disabled)')];
+    return checked.map(c => searchResults[parseInt(c.dataset.idx)]);
+  }
+
+  function buildCSVRow(item) {
+    const email = extractEmail(item) || '';
+    const cols = [
+      item.title || item.name || '',
+      item.totalScore || '',
+      item.reviewsCount || '',
+      item.street || '',
+      item.city || '',
+      item.state || '',
+      item.phone || '',
+      email,
+      item.website || '',
+      item.url || ''
+    ];
+    return cols.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',');
+  }
+
+  const CSV_HEADER = 'Name,Rating,Reviews,Street,City,State,Phone,Email,Website,Google Maps URL';
+
+  function downloadCSV(mode) {
+    document.getElementById('downloadDropdown').classList.remove('open');
+    let items;
+    if (mode === 'all') items = searchResults;
+    else if (mode === 'selected') {
+      items = getSelectedItems();
+      if (!items.length) { toast('No rows selected', 'red'); return; }
+    } else if (mode === 'email') {
+      items = searchResults.filter(r => extractEmail(r));
+      if (!items.length) { toast('No leads with email found', 'yellow'); return; }
+    }
+
+    const csv = [CSV_HEADER, ...items.map(buildCSVRow)].join('\n');
+    const suffix = mode === 'email' ? '_email_only' : mode === 'selected' ? '_selected' : '_all';
+    triggerDownload(csv, `prasha_leads${suffix}.csv`, 'text/csv');
+    toast(`Downloaded ${items.length} leads as CSV ✓`);
+  }
+
+  function downloadJSON(mode) {
+    document.getElementById('downloadDropdown').classList.remove('open');
+    let items;
+    if (mode === 'all') items = searchResults;
+    else if (mode === 'selected') {
+      items = getSelectedItems();
+      if (!items.length) { toast('No rows selected', 'red'); return; }
+    }
+
+    // Clean & annotate with extracted email
+    const clean = items.map(item => ({
+      name: item.title || item.name,
+      rating: item.totalScore,
+      reviews: item.reviewsCount,
+      street: item.street,
+      city: item.city,
+      state: item.state,
+      phone: item.phone,
+      email: extractEmail(item) || null,
+      website: item.website,
+      googleMapsUrl: item.url,
+      placeId: item.placeId
+    }));
+
+    const suffix = mode === 'selected' ? '_selected' : '_all';
+    triggerDownload(JSON.stringify(clean, null, 2), `prasha_leads${suffix}.json`, 'application/json');
+    toast(`Downloaded ${clean.length} leads as JSON ✓`);
+  }
+
+  function triggerDownload(content, filename, type) {
+    const blob = new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  /* ─── SAVE TO APIFY ─────────────────────────────────────────── */
   async function saveSelectedToDataset() {
     const checked = [...document.querySelectorAll('.row-check:checked:not(:disabled)')];
     if (!checked.length) { toast('No rows selected', 'red'); return; }
@@ -879,6 +1082,8 @@ function applyAdvancedFilters(items) {
     searchResults = [];
     document.getElementById('resultCount').textContent = '0';
     document.getElementById('btnSaveAll').disabled = true;
+    document.getElementById('btnDownload').disabled = true;
+    document.getElementById('emailBadge').style.display = 'none';
     document.getElementById('tableContainer').innerHTML = `
       <div class="empty-state">
         <div class="icon">📡</div>
@@ -889,23 +1094,9 @@ function applyAdvancedFilters(items) {
   }
 
   function esc(str) {
-    if (!str) return '—';
+    if (!str) return '';
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
-  function saveSearchHistory({ query, filters, count }) {
-  const history = JSON.parse(localStorage.getItem("lead_history") || "[]");
-
-  history.unshift({
-    id: Date.now(),
-    query,
-    filters,
-    count,
-    date: new Date().toLocaleString()
-  });
-
-  // keep last 20 searches
-  localStorage.setItem("lead_history", JSON.stringify(history.slice(0, 20)));
-}
 </script>
 </body>
 </html>

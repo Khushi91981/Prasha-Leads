@@ -649,31 +649,7 @@
           <option value="100">100 results</option>
         </select>
       </div>
-
-      <div class="form-group full" id="countryPickerGroup">
-        <label>Region / Countries <span id="selectedCountryLabel" style="color:var(--green);margin-left:8px;font-size:11px;font-weight:400;text-transform:none;letter-spacing:0">— 1 selected</span></label>
-        <div class="country-picker">
-          <div class="region-pills">
-            <button type="button" class="region-pill active" data-region="popular" onclick="selectRegion('popular')">⭐ Popular</button>
-            <button type="button" class="region-pill" data-region="all" onclick="selectRegion('all')">🌍 All</button>
-            <button type="button" class="region-pill" data-region="europe" onclick="selectRegion('europe')">🇪🇺 Europe</button>
-            <button type="button" class="region-pill" data-region="americas" onclick="selectRegion('americas')">🌎 Americas</button>
-            <button type="button" class="region-pill" data-region="asia" onclick="selectRegion('asia')">🌏 Asia Pacific</button>
-            <button type="button" class="region-pill" data-region="middleeast" onclick="selectRegion('middleeast')">🌙 Middle East</button>
-            <button type="button" class="region-pill" data-region="africa" onclick="selectRegion('africa')">🌍 Africa</button>
-            <button type="button" class="region-pill" data-region="oceania" onclick="selectRegion('oceania')">🏝 Oceania</button>
-          </div>
-          <div class="country-grid" id="countryGrid"></div>
-          <div class="country-footer">
-            <button type="button" class="clear-countries" onclick="clearCountries()">✕ Clear all</button>
-            <button type="button" class="select-region-all" onclick="selectAllInRegion()">✓ Select all visible</button>
-          </div>
-        </div>
-      </div>
-
-      </div>
-
-      <div class="form-group">
+    <div class="form-group">
         <label>Language</label>
         <select id="language">
           <option value="en" selected>English</option>
@@ -716,6 +692,30 @@
           <option value="4.5">4.5+</option>
         </select>
       </div>
+      <div class="form-group full" id="countryPickerGroup">
+        <label>Region / Countries <span id="selectedCountryLabel" style="color:var(--green);margin-left:8px;font-size:11px;font-weight:400;text-transform:none;letter-spacing:0">— 1 selected</span></label>
+        <div class="country-picker">
+          <div class="region-pills">
+            <button type="button" class="region-pill active" data-region="popular" onclick="selectRegion('popular')">⭐ Popular</button>
+            <button type="button" class="region-pill" data-region="all" onclick="selectRegion('all')">🌍 All</button>
+            <button type="button" class="region-pill" data-region="europe" onclick="selectRegion('europe')">🇪🇺 Europe</button>
+            <button type="button" class="region-pill" data-region="americas" onclick="selectRegion('americas')">🌎 Americas</button>
+            <button type="button" class="region-pill" data-region="asia" onclick="selectRegion('asia')">🌏 Asia Pacific</button>
+            <button type="button" class="region-pill" data-region="middleeast" onclick="selectRegion('middleeast')">🌙 Middle East</button>
+            <button type="button" class="region-pill" data-region="africa" onclick="selectRegion('africa')">🌍 Africa</button>
+            <button type="button" class="region-pill" data-region="oceania" onclick="selectRegion('oceania')">🏝 Oceania</button>
+          </div>
+          <div class="country-grid" id="countryGrid"></div>
+          <div class="country-footer">
+            <button type="button" class="clear-countries" onclick="clearCountries()">✕ Clear all</button>
+            <button type="button" class="select-region-all" onclick="selectAllInRegion()">✓ Select all visible</button>
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+  
     </div>
     <div class="btn-row">
       <button class="btn btn-primary" id="btnSearch" onclick="startSearch()">

@@ -348,14 +348,30 @@
   tbody tr:hover { background: var(--surface2); }
   tbody tr:last-child { border-bottom: none; }
 
+  /* Table — fixed layout prevents columns from bleeding */
+  table { table-layout: fixed; }
+  col.c-check  { width: 36px; }
+  col.c-name   { width: 190px; }
+  col.c-score  { width: 68px; }
+  col.c-rev    { width: 68px; }
+  col.c-street { width: 145px; }
+  col.c-city   { width: 88px; }
+  col.c-state  { width: 88px; }
+  col.c-phone  { width: 128px; }
+  col.c-email  { width: 170px; }
+  col.c-web    { width: 52px; }
+  col.c-action { width: 68px; }
+
   td {
-    padding: 13px 14px;
+    padding: 11px 10px;
     vertical-align: middle;
     color: var(--text);
-    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  td.name { font-weight: 500; color: #fff; white-space: nowrap; }
+  td.name { font-weight: 500; color: #fff; }
 
   .score { display: inline-flex; align-items: center; gap: 4px; font-weight: 500; }
   .score.high { color: var(--green); }
@@ -369,18 +385,19 @@
   .email-cell {
     display: flex;
     align-items: center;
-    gap: 6px;
-    white-space: nowrap;
+    gap: 4px;
+    overflow: hidden;
   }
 
   .email-cell a {
     color: var(--accent);
     font-size: 12px;
     text-decoration: none;
-    max-width: 160px;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: inline-block;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
   }
 
   .email-cell a:hover { text-decoration: underline; }
@@ -540,11 +557,102 @@
       <div class="form-group">
         <label>Country</label>
         <select id="country">
-          <option value="AU" selected>Australia</option>
-          <option value="US">United States</option>
-          <option value="GB">United Kingdom</option>
-          <option value="IN">India</option>
-          <option value="">Any</option>
+          <option value="">🌍 Any Country</option>
+          <optgroup label="Popular">
+            <option value="AU" selected>🇦🇺 Australia</option>
+            <option value="US">🇺🇸 United States</option>
+            <option value="GB">🇬🇧 United Kingdom</option>
+            <option value="CA">🇨🇦 Canada</option>
+            <option value="IN">🇮🇳 India</option>
+            <option value="NZ">🇳🇿 New Zealand</option>
+          </optgroup>
+          <optgroup label="Europe">
+            <option value="AT">🇦🇹 Austria</option>
+            <option value="BE">🇧🇪 Belgium</option>
+            <option value="BG">🇧🇬 Bulgaria</option>
+            <option value="HR">🇭🇷 Croatia</option>
+            <option value="CY">🇨🇾 Cyprus</option>
+            <option value="CZ">🇨🇿 Czech Republic</option>
+            <option value="DK">🇩🇰 Denmark</option>
+            <option value="EE">🇪🇪 Estonia</option>
+            <option value="FI">🇫🇮 Finland</option>
+            <option value="FR">🇫🇷 France</option>
+            <option value="DE">🇩🇪 Germany</option>
+            <option value="GR">🇬🇷 Greece</option>
+            <option value="HU">🇭🇺 Hungary</option>
+            <option value="IE">🇮🇪 Ireland</option>
+            <option value="IT">🇮🇹 Italy</option>
+            <option value="LV">🇱🇻 Latvia</option>
+            <option value="LT">🇱🇹 Lithuania</option>
+            <option value="LU">🇱🇺 Luxembourg</option>
+            <option value="MT">🇲🇹 Malta</option>
+            <option value="NL">🇳🇱 Netherlands</option>
+            <option value="NO">🇳🇴 Norway</option>
+            <option value="PL">🇵🇱 Poland</option>
+            <option value="PT">🇵🇹 Portugal</option>
+            <option value="RO">🇷🇴 Romania</option>
+            <option value="SK">🇸🇰 Slovakia</option>
+            <option value="SI">🇸🇮 Slovenia</option>
+            <option value="ES">🇪🇸 Spain</option>
+            <option value="SE">🇸🇪 Sweden</option>
+            <option value="CH">🇨🇭 Switzerland</option>
+            <option value="UA">🇺🇦 Ukraine</option>
+          </optgroup>
+          <optgroup label="Americas">
+            <option value="AR">🇦🇷 Argentina</option>
+            <option value="BR">🇧🇷 Brazil</option>
+            <option value="CL">🇨🇱 Chile</option>
+            <option value="CO">🇨🇴 Colombia</option>
+            <option value="CR">🇨🇷 Costa Rica</option>
+            <option value="EC">🇪🇨 Ecuador</option>
+            <option value="MX">🇲🇽 Mexico</option>
+            <option value="PA">🇵🇦 Panama</option>
+            <option value="PE">🇵🇪 Peru</option>
+            <option value="UY">🇺🇾 Uruguay</option>
+            <option value="VE">🇻🇪 Venezuela</option>
+          </optgroup>
+          <optgroup label="Asia Pacific">
+            <option value="BD">🇧🇩 Bangladesh</option>
+            <option value="CN">🇨🇳 China</option>
+            <option value="HK">🇭🇰 Hong Kong</option>
+            <option value="ID">🇮🇩 Indonesia</option>
+            <option value="JP">🇯🇵 Japan</option>
+            <option value="KR">🇰🇷 South Korea</option>
+            <option value="MY">🇲🇾 Malaysia</option>
+            <option value="PK">🇵🇰 Pakistan</option>
+            <option value="PH">🇵🇭 Philippines</option>
+            <option value="SG">🇸🇬 Singapore</option>
+            <option value="LK">🇱🇰 Sri Lanka</option>
+            <option value="TW">🇹🇼 Taiwan</option>
+            <option value="TH">🇹🇭 Thailand</option>
+            <option value="VN">🇻🇳 Vietnam</option>
+          </optgroup>
+          <optgroup label="Middle East">
+            <option value="BH">🇧🇭 Bahrain</option>
+            <option value="EG">🇪🇬 Egypt</option>
+            <option value="IL">🇮🇱 Israel</option>
+            <option value="JO">🇯🇴 Jordan</option>
+            <option value="KW">🇰🇼 Kuwait</option>
+            <option value="LB">🇱🇧 Lebanon</option>
+            <option value="OM">🇴🇲 Oman</option>
+            <option value="QA">🇶🇦 Qatar</option>
+            <option value="SA">🇸🇦 Saudi Arabia</option>
+            <option value="TR">🇹🇷 Turkey</option>
+            <option value="AE">🇦🇪 UAE</option>
+          </optgroup>
+          <optgroup label="Africa">
+            <option value="DZ">🇩🇿 Algeria</option>
+            <option value="ET">🇪🇹 Ethiopia</option>
+            <option value="GH">🇬🇭 Ghana</option>
+            <option value="KE">🇰🇪 Kenya</option>
+            <option value="MA">🇲🇦 Morocco</option>
+            <option value="NG">🇳🇬 Nigeria</option>
+            <option value="SN">🇸🇳 Senegal</option>
+            <option value="ZA">🇿🇦 South Africa</option>
+            <option value="TN">🇹🇳 Tunisia</option>
+            <option value="UG">🇺🇬 Uganda</option>
+            <option value="TZ">🇹🇿 Tanzania</option>
+          </optgroup>
         </select>
       </div>
 
@@ -552,8 +660,33 @@
         <label>Language</label>
         <select id="language">
           <option value="en" selected>English</option>
-          <option value="es">Spanish</option>
+          <option value="ar">Arabic</option>
+          <option value="bn">Bengali</option>
+          <option value="zh">Chinese (Simplified)</option>
+          <option value="zh-TW">Chinese (Traditional)</option>
+          <option value="nl">Dutch</option>
           <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="el">Greek</option>
+          <option value="hi">Hindi</option>
+          <option value="id">Indonesian</option>
+          <option value="it">Italian</option>
+          <option value="ja">Japanese</option>
+          <option value="ko">Korean</option>
+          <option value="ms">Malay</option>
+          <option value="fa">Persian</option>
+          <option value="pl">Polish</option>
+          <option value="pt">Portuguese</option>
+          <option value="ru">Russian</option>
+          <option value="es">Spanish</option>
+          <option value="sv">Swedish</option>
+          <option value="ta">Tamil</option>
+          <option value="te">Telugu</option>
+          <option value="th">Thai</option>
+          <option value="tr">Turkish</option>
+          <option value="uk">Ukrainian</option>
+          <option value="ur">Urdu</option>
+          <option value="vi">Vietnamese</option>
         </select>
       </div>
 
@@ -876,20 +1009,20 @@
         : `<span class="no-email">—</span>`;
 
       return `<tr>
-        <td><input type="checkbox" class="row-check" data-idx="${i}" ${isSaved ? 'checked disabled' : ''}></td>
-        <td class="name">${esc(item.title || item.name || '—')}</td>
+        <td style="overflow:visible"><input type="checkbox" class="row-check" data-idx="${i}" ${isSaved ? 'checked disabled' : ''}></td>
+        <td class="name" title="${esc(item.title || item.name || '')}">${esc(item.title || item.name || '—')}</td>
         <td><span class="score ${scoreClass}">${star} ${score.toFixed(1)}</span></td>
         <td>${item.reviewsCount || 0}</td>
-        <td>${esc(item.street || '—')}</td>
-        <td>${esc(item.city || '—')}</td>
-        <td>${esc(item.state || '—')}</td>
-        <td>${item.phone ? `<a href="tel:${item.phone}">${esc(item.phone)}</a>` : '—'}</td>
-        <td>${email ? emailCell : '<span class="no-email">—</span>'}</td>
-        <td>${item.website ? `<a href="${item.website}" target="_blank" rel="noopener">↗</a>` : '—'}</td>
+        <td title="${esc(item.street || '')}">${esc(item.street || '—')}</td>
+        <td title="${esc(item.city || '')}">${esc(item.city || '—')}</td>
+        <td title="${esc(item.state || '')}">${esc(item.state || '—')}</td>
+        <td title="${item.phone || ''}">${item.phone ? `<a href="tel:${item.phone}">${esc(item.phone)}</a>` : '—'}</td>
+        <td title="${esc(email || '')}" style="overflow:hidden">${email ? emailCell : '<span class="no-email">—</span>'}</td>
+        <td style="text-align:center">${item.website ? `<a href="${item.website}" target="_blank" rel="noopener" title="${esc(item.website)}">↗</a>` : '—'}</td>
         <td>
           <button class="save-btn ${isSaved ? 'saved' : ''}" id="savebtn-${i}"
             onclick="saveSingleLead(${i})" ${isSaved ? 'disabled' : ''}>
-            ${isSaved ? '✓ saved' : '↑ save'}
+            ${isSaved ? '✓' : '↑ save'}
           </button>
         </td>
       </tr>`;
@@ -904,10 +1037,15 @@
         </span>
       </div>
       <table>
+        <colgroup>
+          <col class="c-check"><col class="c-name"><col class="c-score"><col class="c-rev">
+          <col class="c-street"><col class="c-city"><col class="c-state"><col class="c-phone">
+          <col class="c-email"><col class="c-web"><col class="c-action">
+        </colgroup>
         <thead><tr>
           <th></th><th>Place Name</th><th>Score</th><th>Reviews</th>
           <th>Street</th><th>City</th><th>State</th>
-          <th>Phone</th><th>Email</th><th>Website</th><th>Action</th>
+          <th>Phone</th><th>Email</th><th>Web</th><th>Action</th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>`;

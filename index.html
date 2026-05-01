@@ -503,6 +503,102 @@
   .toast.green { border-color: var(--green); color: var(--green); }
   .toast.red { border-color: var(--accent2); color: var(--accent2); }
   .toast.yellow { border-color: #ffc842; color: #ffc842; }
+
+  /* ── Country Picker ── */
+  .country-picker {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .region-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,0,0,0.2);
+  }
+
+  .region-pill {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .region-pill:hover { border-color: var(--accent); color: var(--text); }
+  .region-pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .country-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0;
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 8px;
+  }
+
+  .country-grid::-webkit-scrollbar { width: 6px; }
+  .country-grid::-webkit-scrollbar-track { background: transparent; }
+  .country-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .country-chip {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--muted);
+    transition: background 0.12s, color 0.12s;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .country-chip:hover { background: rgba(108,99,255,0.1); color: var(--text); }
+  .country-chip.selected { background: rgba(108,99,255,0.18); color: var(--accent); }
+  .country-chip.selected::before { content: '✓'; color: var(--accent); font-size: 10px; flex-shrink: 0; }
+  .country-chip:not(.selected)::before { content: '·'; color: transparent; font-size: 10px; flex-shrink: 0; }
+
+  .country-footer {
+    display: flex;
+    gap: 8px;
+    padding: 8px 14px;
+    border-top: 1px solid var(--border);
+    background: rgba(0,0,0,0.15);
+  }
+
+  .clear-countries, .select-region-all {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .clear-countries:hover { border-color: var(--accent2); color: var(--accent2); }
+  .select-region-all:hover { border-color: var(--green); color: var(--green); }
+
+  /* Multi-run progress */
+  .run-queue {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 0.02em;
+  }
 </style>
 </head>
 <body>
@@ -554,106 +650,27 @@
         </select>
       </div>
 
-      <div class="form-group">
-        <label>Country</label>
-        <select id="country">
-          <option value="">🌍 Any Country</option>
-          <optgroup label="Popular">
-            <option value="AU" selected>🇦🇺 Australia</option>
-            <option value="US">🇺🇸 United States</option>
-            <option value="GB">🇬🇧 United Kingdom</option>
-            <option value="CA">🇨🇦 Canada</option>
-            <option value="IN">🇮🇳 India</option>
-            <option value="NZ">🇳🇿 New Zealand</option>
-          </optgroup>
-          <optgroup label="Europe">
-            <option value="AT">🇦🇹 Austria</option>
-            <option value="BE">🇧🇪 Belgium</option>
-            <option value="BG">🇧🇬 Bulgaria</option>
-            <option value="HR">🇭🇷 Croatia</option>
-            <option value="CY">🇨🇾 Cyprus</option>
-            <option value="CZ">🇨🇿 Czech Republic</option>
-            <option value="DK">🇩🇰 Denmark</option>
-            <option value="EE">🇪🇪 Estonia</option>
-            <option value="FI">🇫🇮 Finland</option>
-            <option value="FR">🇫🇷 France</option>
-            <option value="DE">🇩🇪 Germany</option>
-            <option value="GR">🇬🇷 Greece</option>
-            <option value="HU">🇭🇺 Hungary</option>
-            <option value="IE">🇮🇪 Ireland</option>
-            <option value="IT">🇮🇹 Italy</option>
-            <option value="LV">🇱🇻 Latvia</option>
-            <option value="LT">🇱🇹 Lithuania</option>
-            <option value="LU">🇱🇺 Luxembourg</option>
-            <option value="MT">🇲🇹 Malta</option>
-            <option value="NL">🇳🇱 Netherlands</option>
-            <option value="NO">🇳🇴 Norway</option>
-            <option value="PL">🇵🇱 Poland</option>
-            <option value="PT">🇵🇹 Portugal</option>
-            <option value="RO">🇷🇴 Romania</option>
-            <option value="SK">🇸🇰 Slovakia</option>
-            <option value="SI">🇸🇮 Slovenia</option>
-            <option value="ES">🇪🇸 Spain</option>
-            <option value="SE">🇸🇪 Sweden</option>
-            <option value="CH">🇨🇭 Switzerland</option>
-            <option value="UA">🇺🇦 Ukraine</option>
-          </optgroup>
-          <optgroup label="Americas">
-            <option value="AR">🇦🇷 Argentina</option>
-            <option value="BR">🇧🇷 Brazil</option>
-            <option value="CL">🇨🇱 Chile</option>
-            <option value="CO">🇨🇴 Colombia</option>
-            <option value="CR">🇨🇷 Costa Rica</option>
-            <option value="EC">🇪🇨 Ecuador</option>
-            <option value="MX">🇲🇽 Mexico</option>
-            <option value="PA">🇵🇦 Panama</option>
-            <option value="PE">🇵🇪 Peru</option>
-            <option value="UY">🇺🇾 Uruguay</option>
-            <option value="VE">🇻🇪 Venezuela</option>
-          </optgroup>
-          <optgroup label="Asia Pacific">
-            <option value="BD">🇧🇩 Bangladesh</option>
-            <option value="CN">🇨🇳 China</option>
-            <option value="HK">🇭🇰 Hong Kong</option>
-            <option value="ID">🇮🇩 Indonesia</option>
-            <option value="JP">🇯🇵 Japan</option>
-            <option value="KR">🇰🇷 South Korea</option>
-            <option value="MY">🇲🇾 Malaysia</option>
-            <option value="PK">🇵🇰 Pakistan</option>
-            <option value="PH">🇵🇭 Philippines</option>
-            <option value="SG">🇸🇬 Singapore</option>
-            <option value="LK">🇱🇰 Sri Lanka</option>
-            <option value="TW">🇹🇼 Taiwan</option>
-            <option value="TH">🇹🇭 Thailand</option>
-            <option value="VN">🇻🇳 Vietnam</option>
-          </optgroup>
-          <optgroup label="Middle East">
-            <option value="BH">🇧🇭 Bahrain</option>
-            <option value="EG">🇪🇬 Egypt</option>
-            <option value="IL">🇮🇱 Israel</option>
-            <option value="JO">🇯🇴 Jordan</option>
-            <option value="KW">🇰🇼 Kuwait</option>
-            <option value="LB">🇱🇧 Lebanon</option>
-            <option value="OM">🇴🇲 Oman</option>
-            <option value="QA">🇶🇦 Qatar</option>
-            <option value="SA">🇸🇦 Saudi Arabia</option>
-            <option value="TR">🇹🇷 Turkey</option>
-            <option value="AE">🇦🇪 UAE</option>
-          </optgroup>
-          <optgroup label="Africa">
-            <option value="DZ">🇩🇿 Algeria</option>
-            <option value="ET">🇪🇹 Ethiopia</option>
-            <option value="GH">🇬🇭 Ghana</option>
-            <option value="KE">🇰🇪 Kenya</option>
-            <option value="MA">🇲🇦 Morocco</option>
-            <option value="NG">🇳🇬 Nigeria</option>
-            <option value="SN">🇸🇳 Senegal</option>
-            <option value="ZA">🇿🇦 South Africa</option>
-            <option value="TN">🇹🇳 Tunisia</option>
-            <option value="UG">🇺🇬 Uganda</option>
-            <option value="TZ">🇹🇿 Tanzania</option>
-          </optgroup>
-        </select>
+      <div class="form-group full" id="countryPickerGroup">
+        <label>Region / Countries <span id="selectedCountryLabel" style="color:var(--green);margin-left:8px;font-size:11px;font-weight:400;text-transform:none;letter-spacing:0">— 1 selected</span></label>
+        <div class="country-picker">
+          <div class="region-pills">
+            <button type="button" class="region-pill active" data-region="popular" onclick="selectRegion('popular')">⭐ Popular</button>
+            <button type="button" class="region-pill" data-region="all" onclick="selectRegion('all')">🌍 All</button>
+            <button type="button" class="region-pill" data-region="europe" onclick="selectRegion('europe')">🇪🇺 Europe</button>
+            <button type="button" class="region-pill" data-region="americas" onclick="selectRegion('americas')">🌎 Americas</button>
+            <button type="button" class="region-pill" data-region="asia" onclick="selectRegion('asia')">🌏 Asia Pacific</button>
+            <button type="button" class="region-pill" data-region="middleeast" onclick="selectRegion('middleeast')">🌙 Middle East</button>
+            <button type="button" class="region-pill" data-region="africa" onclick="selectRegion('africa')">🌍 Africa</button>
+            <button type="button" class="region-pill" data-region="oceania" onclick="selectRegion('oceania')">🏝 Oceania</button>
+          </div>
+          <div class="country-grid" id="countryGrid"></div>
+          <div class="country-footer">
+            <button type="button" class="clear-countries" onclick="clearCountries()">✕ Clear all</button>
+            <button type="button" class="select-region-all" onclick="selectAllInRegion()">✓ Select all visible</button>
+          </div>
+        </div>
+      </div>
+
       </div>
 
       <div class="form-group">
@@ -840,121 +857,193 @@
     return null;
   }
 
+  /* ─── COUNTRY DATA ─────────────────────────────────────────── */
+  const REGIONS = {
+    popular:   [['AU','🇦🇺','Australia'],['US','🇺🇸','United States'],['GB','🇬🇧','United Kingdom'],['CA','🇨🇦','Canada'],['IN','🇮🇳','India'],['NZ','🇳🇿','New Zealand'],['SG','🇸🇬','Singapore'],['AE','🇦🇪','UAE'],['ZA','🇿🇦','South Africa']],
+    europe:    [['AT','🇦🇹','Austria'],['BE','🇧🇪','Belgium'],['BG','🇧🇬','Bulgaria'],['HR','🇭🇷','Croatia'],['CY','🇨🇾','Cyprus'],['CZ','🇨🇿','Czech Republic'],['DK','🇩🇰','Denmark'],['EE','🇪🇪','Estonia'],['FI','🇫🇮','Finland'],['FR','🇫🇷','France'],['DE','🇩🇪','Germany'],['GR','🇬🇷','Greece'],['HU','🇭🇺','Hungary'],['IE','🇮🇪','Ireland'],['IT','🇮🇹','Italy'],['LV','🇱🇻','Latvia'],['LT','🇱🇹','Lithuania'],['LU','🇱🇺','Luxembourg'],['MT','🇲🇹','Malta'],['NL','🇳🇱','Netherlands'],['NO','🇳🇴','Norway'],['PL','🇵🇱','Poland'],['PT','🇵🇹','Portugal'],['RO','🇷🇴','Romania'],['SK','🇸🇰','Slovakia'],['SI','🇸🇮','Slovenia'],['ES','🇪🇸','Spain'],['SE','🇸🇪','Sweden'],['CH','🇨🇭','Switzerland'],['UA','🇺🇦','Ukraine'],['GB','🇬🇧','United Kingdom']],
+    americas:  [['AR','🇦🇷','Argentina'],['BR','🇧🇷','Brazil'],['CA','🇨🇦','Canada'],['CL','🇨🇱','Chile'],['CO','🇨🇴','Colombia'],['CR','🇨🇷','Costa Rica'],['EC','🇪🇨','Ecuador'],['MX','🇲🇽','Mexico'],['PA','🇵🇦','Panama'],['PE','🇵🇪','Peru'],['US','🇺🇸','United States'],['UY','🇺🇾','Uruguay'],['VE','🇻🇪','Venezuela']],
+    asia:      [['BD','🇧🇩','Bangladesh'],['CN','🇨🇳','China'],['HK','🇭🇰','Hong Kong'],['ID','🇮🇩','Indonesia'],['IN','🇮🇳','India'],['JP','🇯🇵','Japan'],['KR','🇰🇷','South Korea'],['MY','🇲🇾','Malaysia'],['PK','🇵🇰','Pakistan'],['PH','🇵🇭','Philippines'],['SG','🇸🇬','Singapore'],['LK','🇱🇰','Sri Lanka'],['TW','🇹🇼','Taiwan'],['TH','🇹🇭','Thailand'],['VN','🇻🇳','Vietnam']],
+    middleeast:[['BH','🇧🇭','Bahrain'],['EG','🇪🇬','Egypt'],['IL','🇮🇱','Israel'],['JO','🇯🇴','Jordan'],['KW','🇰🇼','Kuwait'],['LB','🇱🇧','Lebanon'],['OM','🇴🇲','Oman'],['QA','🇶🇦','Qatar'],['SA','🇸🇦','Saudi Arabia'],['TR','🇹🇷','Turkey'],['AE','🇦🇪','UAE']],
+    africa:    [['DZ','🇩🇿','Algeria'],['AO','🇦🇴','Angola'],['BJ','🇧🇯','Benin'],['BW','🇧🇼','Botswana'],['BF','🇧🇫','Burkina Faso'],['CM','🇨🇲','Cameroon'],['CV','🇨🇻','Cape Verde'],['ET','🇪🇹','Ethiopia'],['GA','🇬🇦','Gabon'],['GM','🇬🇲','Gambia'],['GH','🇬🇭','Ghana'],['GN','🇬🇳','Guinea'],['KE','🇰🇪','Kenya'],['LS','🇱🇸','Lesotho'],['LR','🇱🇷','Liberia'],['LY','🇱🇾','Libya'],['MG','🇲🇬','Madagascar'],['MW','🇲🇼','Malawi'],['ML','🇲🇱','Mali'],['MA','🇲🇦','Morocco'],['MZ','🇲🇿','Mozambique'],['NA','🇳🇦','Namibia'],['NE','🇳🇪','Niger'],['NG','🇳🇬','Nigeria'],['RW','🇷🇼','Rwanda'],['SN','🇸🇳','Senegal'],['SL','🇸🇱','Sierra Leone'],['ZA','🇿🇦','South Africa'],['SS','🇸🇸','South Sudan'],['SD','🇸🇩','Sudan'],['TZ','🇹🇿','Tanzania'],['TG','🇹🇬','Togo'],['TN','🇹🇳','Tunisia'],['UG','🇺🇬','Uganda'],['ZM','🇿🇲','Zambia'],['ZW','🇿🇼','Zimbabwe']],
+    oceania:   [['AU','🇦🇺','Australia'],['FJ','🇫🇯','Fiji'],['NZ','🇳🇿','New Zealand'],['PG','🇵🇬','Papua New Guinea'],['WS','🇼🇸','Samoa'],['SB','🇸🇧','Solomon Islands'],['TO','🇹🇴','Tonga'],['VU','🇻🇺','Vanuatu']]
+  };
+
+  // Build deduplicated "all" list
+  REGIONS.all = Object.values(REGIONS)
+    .flat()
+    .filter((v,i,a) => a.findIndex(x=>x[0]===v[0])===i)
+    .sort((a,b)=>a[2].localeCompare(b[2]));
+
+  let selectedCountries = new Set(['AU']);
+  let currentRegion = 'popular';
+
+  function buildCountryGrid(region) {
+    const grid = document.getElementById('countryGrid');
+    if (!grid) return;
+    const list = REGIONS[region] || REGIONS.popular;
+    grid.innerHTML = list.map(([code, flag, name]) => `
+      <div class="country-chip ${selectedCountries.has(code)?'selected':''}"
+           data-code="${code}" onclick="toggleCountry('${code}', this)">
+        <span>${flag}</span><span>${name}</span>
+      </div>`).join('');
+    updateCountryLabel();
+  }
+
+  function toggleCountry(code, el) {
+    if (selectedCountries.has(code)) {
+      selectedCountries.delete(code);
+      el.classList.remove('selected');
+    } else {
+      selectedCountries.add(code);
+      el.classList.add('selected');
+    }
+    updateCountryLabel();
+  }
+
+  function selectRegion(region) {
+    currentRegion = region;
+    document.querySelectorAll('.region-pill').forEach(p => {
+      p.classList.toggle('active', p.dataset.region === region);
+    });
+    buildCountryGrid(region);
+  }
+
+  function selectAllInRegion() {
+    (REGIONS[currentRegion] || []).forEach(([code]) => selectedCountries.add(code));
+    buildCountryGrid(currentRegion);
+  }
+
+  function clearCountries() {
+    selectedCountries.clear();
+    buildCountryGrid(currentRegion);
+  }
+
+  function updateCountryLabel() {
+    const n = selectedCountries.size;
+    document.getElementById('selectedCountryLabel').textContent =
+      n === 0 ? '— none (global search)' :
+      n === 1 ? '— 1 country selected' :
+      `— ${n} countries selected (will run ${n} searches sequentially)`;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => buildCountryGrid('popular'));
+
   /* ─── SEARCH ───────────────────────────────────────────────── */
   async function startSearch() {
     const query = document.getElementById('searchQuery').value.trim();
     if (!query) { toast('Please enter a search query', 'red'); return; }
 
+    const countries = [...selectedCountries];
     const maxResults = parseInt(document.getElementById('maxResults').value);
-    const country = document.getElementById('country').value;
     const language = document.getElementById('language').value;
 
+    if (countries.length <= 1) {
+      // Single country or global — original flow
+      await runSingleCountry(query, countries[0] || null, maxResults, language);
+      return;
+    }
+
+    // ── Multi-country sequential run ──
+    document.getElementById('btnSearch').disabled = true;
+    document.getElementById('progressWrap').style.display = 'block';
+    clearResults();
+    searchResults = [];
+
+    for (let i = 0; i < countries.length; i++) {
+      const cc = countries[i];
+      const countryName = REGIONS.all.find(c=>c[0]===cc)?.[2] || cc;
+      setStatus('loading', `Searching in ${countryName}… (${i+1} / ${countries.length})`);
+      setProgress(Math.round((i / countries.length) * 88) + 5);
+      try {
+        const items = await fetchCountryRun(query, cc, maxResults, language);
+        if (items) searchResults.push(...items);
+        document.getElementById('resultCount').textContent = searchResults.length;
+      } catch(e) { console.warn('Failed for', cc, e.message); }
+    }
+
+    const filtered = applyAdvancedFilters(searchResults);
+    searchResults = filtered;
+    renderTable(searchResults);
+    updateEmailBadge();
+    document.getElementById('resultCount').textContent = searchResults.length;
+    const emailCount = searchResults.filter(r => extractEmail(r)).length;
+    setProgress(100);
+    setStatus('success', `${searchResults.length} leads from ${countries.length} countries · ${emailCount} with email`);
+    toast(`Done! ${searchResults.length} leads across ${countries.length} countries`);
+    if (searchResults.length > 0) {
+      document.getElementById('btnSaveAll').disabled = false;
+      document.getElementById('btnDownload').disabled = false;
+    }
+    document.getElementById('btnSearch').disabled = false;
+    setTimeout(() => { document.getElementById('progressWrap').style.display='none'; setProgress(0); }, 1200);
+  }
+
+  // Single country run with full UI feedback
+  async function runSingleCountry(query, countryCode, maxResults, language) {
     document.getElementById('btnSearch').disabled = true;
     document.getElementById('progressWrap').style.display = 'block';
     setProgress(5);
-    setStatus('loading', 'Starting Apify actor run...');
+    setStatus('loading', 'Starting Apify actor run…');
     clearResults();
-
-    const input = {
-      searchStringsArray: [query],
-      maxCrawledPlacesPerSearch: maxResults,
-      language: language,
-      ...(country ? { countryCode: country.toLowerCase() } : {})
-    };
-
     try {
-      const runRes = await fetch(
-        `https://api.apify.com/v2/acts/${ACTOR_ID}/runs?token=${APIFY_TOKEN}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(input)
-        }
-      );
-
-      if (!runRes.ok) {
-        const err = await runRes.json();
-        throw new Error(err.error?.message || 'Failed to start actor');
-      }
-
-      const runData = await runRes.json();
-      currentRunId = runData.data.id;
-      setProgress(15);
-      setStatus('loading', `Run started (ID: ${currentRunId}) — waiting for results...`);
-      pollForResults(currentRunId);
-
-    } catch (e) {
-      setStatus('error', 'Error: ' + e.message);
-      toast('Failed to start search: ' + e.message, 'red');
-      document.getElementById('btnSearch').disabled = false;
-    }
-  }
-
-  function pollForResults(runId) {
-    let dots = 0;
-    let progress = 15;
-    pollInterval = setInterval(async () => {
-      dots = (dots + 1) % 4;
-      progress = Math.min(progress + 2, 85);
-      setProgress(progress);
-      setStatus('loading', 'Scraping Google Maps' + '.'.repeat(dots + 1));
-
-      try {
-        const res = await fetch(`https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_TOKEN}`);
-        const data = await res.json();
-        const status = data.data.status;
-
-        if (status === 'SUCCEEDED') {
-          clearInterval(pollInterval);
-          setProgress(95);
-          await fetchDatasetItems(data.data.defaultDatasetId);
-        } else if (status === 'FAILED' || status === 'ABORTED') {
-          clearInterval(pollInterval);
-          setStatus('error', 'Actor run ' + status.toLowerCase());
-          toast('Actor run failed', 'red');
-          document.getElementById('btnSearch').disabled = false;
-        }
-      } catch (e) { /* keep polling */ }
-    }, 4000);
-  }
-
-  async function fetchDatasetItems(datasetId) {
-    setStatus('loading', 'Fetching results...');
-    try {
-      const res = await fetch(
-        `https://api.apify.com/v2/datasets/${datasetId}/items?token=${APIFY_TOKEN}&clean=true&limit=200`
-      );
-      const items = await res.json();
-      setProgress(100);
-
+      const items = await fetchCountryRun(query, countryCode, maxResults, language);
       const minRating = parseFloat(document.getElementById('minRating').value) || 0;
-      let results = minRating > 0
-        ? items.filter(i => (i.totalScore || 0) >= minRating)
-        : items;
-
+      let results = minRating > 0 ? items.filter(i => (i.totalScore||0) >= minRating) : items;
       searchResults = applyAdvancedFilters(results);
-
       renderTable(searchResults);
       updateEmailBadge();
-
       const emailCount = searchResults.filter(r => extractEmail(r)).length;
+      setProgress(100);
       setStatus('success', `Found ${searchResults.length} leads · ${emailCount} with email`);
       toast(`${searchResults.length} leads fetched!`);
       document.getElementById('resultCount').textContent = searchResults.length;
-
       if (searchResults.length > 0) {
         document.getElementById('btnSaveAll').disabled = false;
         document.getElementById('btnDownload').disabled = false;
       }
-
-    } catch (e) {
-      setStatus('error', 'Failed to fetch results: ' + e.message);
+    } catch(e) {
+      setStatus('error', 'Error: ' + e.message);
+      toast('Search failed: ' + e.message, 'red');
     } finally {
       document.getElementById('btnSearch').disabled = false;
-      setTimeout(() => {
-        document.getElementById('progressWrap').style.display = 'none';
-        setProgress(0);
-      }, 1000);
+      setTimeout(() => { document.getElementById('progressWrap').style.display='none'; setProgress(0); }, 1000);
+    }
+  }
+
+  // Core: start a run and wait for items, returns raw items array
+  async function fetchCountryRun(query, countryCode, maxResults, language) {
+    const input = {
+      searchStringsArray: [query],
+      maxCrawledPlacesPerSearch: maxResults,
+      language,
+      ...(countryCode ? { countryCode: countryCode.toLowerCase() } : {})
+    };
+
+    const runRes = await fetch(
+      `https://api.apify.com/v2/acts/${ACTOR_ID}/runs?token=${APIFY_TOKEN}`,
+      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) }
+    );
+    if (!runRes.ok) {
+      const err = await runRes.json();
+      throw new Error(err.error?.message || 'Failed to start actor');
+    }
+    const runData = await runRes.json();
+    const runId = runData.data.id;
+
+    // Poll until finished
+    while (true) {
+      await new Promise(r => setTimeout(r, 4000));
+      const statusRes = await fetch(`https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_TOKEN}`);
+      const statusData = await statusRes.json();
+      const s = statusData.data.status;
+      if (s === 'SUCCEEDED') {
+        const datasetId = statusData.data.defaultDatasetId;
+        const itemsRes = await fetch(
+          `https://api.apify.com/v2/datasets/${datasetId}/items?token=${APIFY_TOKEN}&clean=true&limit=200`
+        );
+        return await itemsRes.json();
+      }
+      if (s === 'FAILED' || s === 'ABORTED') throw new Error('Actor run ' + s);
     }
   }
 
